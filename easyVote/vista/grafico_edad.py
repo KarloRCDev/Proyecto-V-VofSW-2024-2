@@ -5,7 +5,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from database import Database
 from mergesort import merge_sort
 from votante import Votante
-import time 
+import time
+
 
 class GraficoEdad:
     def __init__(self):
@@ -41,10 +42,8 @@ class GraficoEdad:
 
         self.total_votes_label = tk.Label(self.root, text="")
         self.total_votes_label.pack()
-
     def run(self):
         self.root.mainloop()
-        
 
     def close_button_click_handler(self):
         self.root.destroy()
@@ -54,11 +53,13 @@ class GraficoEdad:
         rango_edad_max = self.entry_max.get()
 
         if not rango_edad_min.strip() or not rango_edad_max.strip():
-            messagebox.showinfo("Información", "Ingrese valores para el rango de edad.")
+            messagebox.showinfo(
+                "Información", "Ingrese valores para el rango de edad.")
             return
 
         if not rango_edad_min.isdigit() or not rango_edad_max.isdigit():
-            messagebox.showinfo("Información", "Ingrese valores numéricos para el rango de edad.")
+            messagebox.showinfo(
+                "Información", "Ingrese valores numéricos para el rango de edad.")
             return
 
         rango_edad_min = int(rango_edad_min)
@@ -78,12 +79,13 @@ class GraficoEdad:
                 else:
                     votos_por_candidato[candidato] = 1
 
-            start_time = time.perf_counter()  # Guardar el tiempo de inicio
-            resultados_ordenados = merge_sort(list(votos_por_candidato.items()))
-            end_time = time.perf_counter()  # Guardar el tiempo de finalización
-            tiempo_transcurrido = end_time - start_time  # Calcular la diferencia de tiempo
+            start_time = time.perf_counter()
+            resultados_ordenados = merge_sort(
+                list(votos_por_candidato.items()))
+            end_time = time.perf_counter()
+            tiempo_transcurrido = end_time - start_time
             print("Tiempo transcurrido (mergesort):", tiempo_transcurrido)
-            
+
             candidatos = [candidato[0] for candidato in resultados_ordenados]
             votos = [candidato[1] for candidato in resultados_ordenados]
             total_votos = sum(votos)
@@ -95,8 +97,7 @@ class GraficoEdad:
         else:
             messagebox.showinfo(
                 "Información", "No se encontraron votos para el rango de edad especificado.")
-            self.reset_graph()  # Borrar la gráfica actual
-
+            self.reset_graph()
         self.database.close()
 
     def plot_graph(self, candidatos, votos):
